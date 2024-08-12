@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-
+{% load static %}
+{% block title %} Dashboard {% endblock title %}
 {% block content %}
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -28,98 +29,99 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {% if messages %}
-                            {% for message in messages %}
-                                <span class="badge rounded-pill bg-danger">{{ message }}</span>
-                            {% endfor %}
+                        <i class="fa-solid fa-user me-1" title='{{user.username}}'></i>
+                        {% if user.user_type == "manager" %}
+                            MA.
+                        {% elif user.user_type == "developer"%}
+                            DEV.
+                        {% else %}
+                            QA.
                         {% endif %}
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Logout</a></li>
+                      <li><a class="dropdown-item" href="{% url "projects:logout" %}">Logout</a></li>
                     </ul>
                   </li>
           
             </ul>
         </div>
     </nav>
+    <hr>
+    <div class="d-flex justify-content-between align-items-center ps-3 border-start border-3 border-success">
+        <p>Projects<br>Hi DeVisnext, welcome to ManageBug</p>
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        {% if user.user_type == "manager" %}
+            <a href="#" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-plus"></i> Create Project
+                </button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title fs-5 text-black" id="exampleModalLabel">Add Project</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'projects:createproject' %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="projectName">Project name</label>
+                                        <input type="text" class="form-control" id="projectName"  name="projectName" placeholder="Enter project name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shortDetails">Short details</label>
+                                        <textarea class="form-control stop-resize" id="shortDetails" rows="3" name="shortDetails" placeholder="Enter details here"></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2 mt-3">
+                                        <button type="submit" class="btn btn-primary">Add</button>
+                                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        {% comment %} <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Add Project</button>
+                        </div> {% endcomment %}
+                      </div>
+                    </div>
+            {% comment %} {% elif user.user_type == "qa"%}
+            <i class="fa-solid fa-plus"></i> Create Bug {% endcomment %}
+            </a>
+        {% endif %}
+    </div>
+
     <div class="container">
-        <h1 class="mt-4">Projects</h1>
-        <p class="lead">Hi DeVisnext, welcome to ManageBug</p>
         <div class="row mt-4">
-            <div class="col-12 col-md-6 col-lg-4 mb-4">
-                <div class="card">
+            {% for project in projects%}
+            {% comment %} <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm scaleup">
                     <div class="card-body">
-                        <div class="card-icon bg-primary">
-                            <i class="fas fa-mobile-alt"></i>
+                        <div class="bg-primary img_icon">
+                            <img src="{{project.image.url}}" alt="Project image" class="img">
                         </div>
-                        <h5 class="card-title">Android UI System</h5>
-                        <p class="card-text">Redesign all the web pages with animation.</p>
-                        <p class="card-text">Task Done: 02/56</p>
+                        <h5 class="card-title">{{project.name}}</h5>
+                        <p class="card-text">{{project.detail}}</p>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+            <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex">
+                <div class="card shadow-sm scaleup h-100 w-100">
+                    <div class="card-body d-flex flex-column">
+                        <div class="bg-primary img_icon">
+                            <img src="{{project.image.url}}" alt="Project image" class="img">
+                        </div>
+                        <h5 class="card-title mt-2">{{project.name}}</h5>
+                        <p class="card-text flex-grow-1">{{project.detail}}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-icon bg-success">
-                            <i class="fas fa-desktop"></i>
-                        </div>
-                        <h5 class="card-title">Meeting Hub Website</h5>
-                        <p class="card-text">Redesign all the web pages with animation.</p>
-                        <p class="card-text">Task Done: 06/56</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-icon bg-danger">
-                            <i class="fas fa-basketball-ball"></i>
-                        </div>
-                        <h5 class="card-title">Dribbble Presentation</h5>
-                        <p class="card-text">Redesign all the web pages with animation.</p>
-                        <p class="card-text">Task Done: 08/56</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-icon bg-info">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                        <h5 class="card-title">Pixels Design studio</h5>
-                        <p class="card-text">Redesign all the web pages with animation.</p>
-                        <p class="card-text">Task Done: 18/56</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-icon bg-warning">
-                            <i class="fas fa-cube"></i>
-                        </div>
-                        <h5 class="card-title">Tubik Presentation</h5>
-                        <p class="card-text">Redesign all the web pages with animation.</p>
-                        <p class="card-text">Task Done: 25/56</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-icon bg-secondary">
-                            <i class="fas fa-microphone-alt"></i>
-                        </div>
-                        <h5 class="card-title">Vani Design Studio</h5>
-                        <p class="card-text">Redesign all the web pages with animation.</p>
-                        <p class="card-text">Task Done: 32/56</p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
-        
     </div>
 </div>
 {% endblock content %}

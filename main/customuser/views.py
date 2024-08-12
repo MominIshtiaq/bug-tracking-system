@@ -37,11 +37,7 @@ def login(request):
             formPassword = form.cleaned_data['password']
 
             if(formName == userEmail.username and formEmail == userEmail.email and formPassword == userEmail.password):
-                user = {
-                    'username': userEmail.username,
-                    'email': userEmail.email,
-                    'user_type': userEmail.user_type
-                }
+                request.session['user_id'] = userEmail.id
                 return redirect('projects:dashboard')
             
     context = {'form': form}
