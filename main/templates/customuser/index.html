@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Welcome{% endblock title %}
+
+{% block content %}
+<div class="row vh-100">
+    <div class="col-md-5">
+        <img src="{% static 'images/index.jpeg' %}" alt="Computer image" class="img">
+    </div>
+    <div class="col-md-7 p-5">
+        <div class="row w-100 mb-3">
+            <p class="text-secondary-emphasis text-end">
+                Already have an account?
+                <a href="{% url 'customuser:login' %}" class="text-decoration-none">Log in</a>
+            </p>
+        </div>
+        <div class="row h-100">
+            <div class="col-12">
+                <h4 class="">Join Us!</h4>
+                <p>To begin this journey, tell us what type of account you'd be opening</p>
+                <div class="manage">
+                    {# manager #}
+                    <a href="{% url 'customuser:signin' "manager" %}" class="text-decoration-none text-black">
+                        <div class="box">
+                            <div class="icon">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div>
+                                <p><strong>Manager</strong><br>Signup as a manager to manage the tasks and bugs</p>
+                            </div>
+                        </div>
+                    </a>
+                    {# developer #}
+                    <a href="{% url 'customuser:signin' "developer" %}" class="text-decoration-none text-black">
+                        <div class="box">
+                            <div class="icon">
+                                <i class="fa-solid fa-suitcase"></i>
+                            </div>
+                            <div>
+                                <p><strong>Developer</strong><br>Signup as a developer to assign the relevent tasks to QA</p>
+                            </div>
+                        </div>
+                    </a>
+                    {# quality assurance #}
+                    <a href="{% url 'customuser:signin' "qa" %}" class="text-decoration-none text-black">
+                        <div class="box">
+                            <div class="icon">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div>
+                                <p><strong>QA</strong><br>Signup as a QA to create the bugs and report in tasks</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+ 
+
+
+
+

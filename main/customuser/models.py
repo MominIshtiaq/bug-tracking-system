@@ -1,16 +1,11 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # User Model
-class Customuser(AbstractUser):
-    Role = [
-        ('DEV', 'Developer'),
-        ('QA', 'Quality Assurance'),
-        ('MA', 'Manager'),
-    ]
-
+class Customuser(models.Model):
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
     email = models.EmailField()
-    user_type = models.CharField(max_length=3, choices=Role)
+    user_type = models.CharField(max_length=20)
     image = models.ImageField(default="default_user_img.jpg", blank= True)
 
     def __str__(self):

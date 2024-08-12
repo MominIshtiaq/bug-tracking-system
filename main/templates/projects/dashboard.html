@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#"><strong>Manage</strong>Bug</a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-brands fa-stack-overflow"></i> Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-list-check"></i> Tasks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-bars-progress"></i>  Manage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-user"></i> Payments</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-bell"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-envelope"></i></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <span class="badge rounded-pill bg-danger">{{ message }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                  </li>
+          
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="mt-4">Projects</h1>
+        <p class="lead">Hi DeVisnext, welcome to ManageBug</p>
+        <div class="row mt-4">
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h5 class="card-title">Android UI System</h5>
+                        <p class="card-text">Redesign all the web pages with animation.</p>
+                        <p class="card-text">Task Done: 02/56</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <h5 class="card-title">Meeting Hub Website</h5>
+                        <p class="card-text">Redesign all the web pages with animation.</p>
+                        <p class="card-text">Task Done: 06/56</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon bg-danger">
+                            <i class="fas fa-basketball-ball"></i>
+                        </div>
+                        <h5 class="card-title">Dribbble Presentation</h5>
+                        <p class="card-text">Redesign all the web pages with animation.</p>
+                        <p class="card-text">Task Done: 08/56</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon bg-info">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h5 class="card-title">Pixels Design studio</h5>
+                        <p class="card-text">Redesign all the web pages with animation.</p>
+                        <p class="card-text">Task Done: 18/56</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon bg-warning">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <h5 class="card-title">Tubik Presentation</h5>
+                        <p class="card-text">Redesign all the web pages with animation.</p>
+                        <p class="card-text">Task Done: 25/56</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-icon bg-secondary">
+                            <i class="fas fa-microphone-alt"></i>
+                        </div>
+                        <h5 class="card-title">Vani Design Studio</h5>
+                        <p class="card-text">Redesign all the web pages with animation.</p>
+                        <p class="card-text">Task Done: 32/56</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock content %}
+

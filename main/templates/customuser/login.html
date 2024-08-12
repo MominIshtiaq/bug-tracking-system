@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Welcome{% endblock title %}
+
+{% block content %}
+<div class="row vh-100">
+    <div class="col-md-5">
+        <img src="{% static 'images/index.jpeg' %}" alt="Computer image" class="img">
+    </div>
+    <div class="col-md-7 p-5">
+        <div class="row h-100">
+            <div class="col-12">
+                <h4 class="">Login</h4>
+                <p>Please enter your login details</p>
+                <div class="manage">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type="submit" class="btn btn-primary">
+                            Login &nbsp; &nbsp; &nbsp;
+                            <i class="fa-solid fa-angle-right"></i>
+                        </button>
+                    </form>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <p>Don't have an account</p>
+                    <a href="{% url 'customuser:index' %}" class="text-decoration-none">Create account</a>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+ 
+
+
+
+
