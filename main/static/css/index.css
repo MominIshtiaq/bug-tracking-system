@@ -1,8 +1,25 @@
-body {
-    padding: 0;
+html, body {
+    height: 100%;
     margin: 0;
-    box-sizing: border-box;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
+
+.wrapper {
+    flex: 1 0 auto; /* This allows the wrapper to expand and take available space */
+}
+
+footer {
+    flex-shrink: 0; /* Footer will stay at the bottom */
+    width: 100%;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e7e7e7;
+    padding: 10px 0;
+    text-align: center;
+}
+
+
 
 .img {
     width: 100%;

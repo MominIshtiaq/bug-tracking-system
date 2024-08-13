@@ -3,6 +3,7 @@ sys.path.append("..")
 from django.shortcuts import render, redirect
 from .models import Projects
 from customuser.models import Customuser
+from django.core.paginator import Paginator
 
 # Create your views here.
 def dashboard(request):
@@ -10,9 +11,19 @@ def dashboard(request):
     if user_id:
         user = Customuser.objects.get(id=user_id)
         projects = Projects.objects.all()
+        paginator = Paginator(projects, 3)
+        page_no = request.GET.get('page')
+        page_obj = paginator.get_page(page_no)
+
+        start_index = (page_obj.number - 1) * paginator.per_page + 1
+        end_index = start_index + len(page_obj.object_list) - 1
+
         context = {
             "user": user,
-            "projects": projects
+            "projects": page_obj,
+            "start_index": start_index,
+            "end_index": end_index,
+            "total_entries": paginator.count,
         }
     else:
         return redirect('customuser:login')
@@ -33,8 +44,6 @@ def createproject(request):
     else:
         return redirect('projects:dashboard')
 
-def logout(request):
-    request.session.flush()
-    return redirect('customuser:login')
+
 
     

@@ -2,127 +2,107 @@
 {% load static %}
 {% block title %} Dashboard {% endblock title %}
 {% block content %}
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#"><strong>Manage</strong>Bug</a>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-brands fa-stack-overflow"></i> Projects</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-list-check"></i> Tasks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-bars-progress"></i>  Manage</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-user"></i> Payments</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-bell"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-envelope"></i></a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-user me-1" title='{{user.username}}'></i>
-                        {% if user.user_type == "manager" %}
-                            MA.
-                        {% elif user.user_type == "developer"%}
-                            DEV.
-                        {% else %}
-                            QA.
-                        {% endif %}
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url "projects:logout" %}">Logout</a></li>
-                    </ul>
-                  </li>
-          
-            </ul>
-        </div>
-    </nav>
-    <hr>
-    <div class="d-flex justify-content-between align-items-center ps-3 border-start border-3 border-success">
-        <p>Projects<br>Hi DeVisnext, welcome to ManageBug</p>
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-        {% if user.user_type == "manager" %}
-            <a href="#" class="btn btn-primary">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="fa-solid fa-plus"></i> Create Project
-                </button>
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title fs-5 text-black" id="exampleModalLabel">Add Project</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="POST" action="{% url 'projects:createproject' %}">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="projectName">Project name</label>
-                                        <input type="text" class="form-control" id="projectName"  name="projectName" placeholder="Enter project name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shortDetails">Short details</label>
-                                        <textarea class="form-control stop-resize" id="shortDetails" rows="3" name="shortDetails" placeholder="Enter details here"></textarea>
-                                    </div>
-                                    <div class="d-flex justify-content-end gap-2 mt-3">
-                                        <button type="submit" class="btn btn-primary">Add</button>
-                                        <button type="reset" class="btn btn-secondary">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        {% comment %} <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Add Project</button>
-                        </div> {% endcomment %}
-                      </div>
-                    </div>
-            {% comment %} {% elif user.user_type == "qa"%}
-            <i class="fa-solid fa-plus"></i> Create Bug {% endcomment %}
-            </a>
-        {% endif %}
-    </div>
-
+{% include "partials/navbar.html" %}
+<div class="wrapper">
     <div class="container">
-        <div class="row mt-4">
-            {% for project in projects%}
-            {% comment %} <div class="col-12 col-md-6 col-lg-4 mb-4">
-                <div class="card shadow-sm scaleup">
-                    <div class="card-body">
-                        <div class="bg-primary img_icon">
-                            <img src="{{project.image.url}}" alt="Project image" class="img">
+        <div class="d-flex justify-content-between align-items-center ps-3 border-start border-3 border-success">
+            <p>Projects<br>Hi DeVisnext, welcome to ManageBug</p>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            {% if user.user_type == "manager" %}
+                <a href="#" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fa-solid fa-plus"></i> Create Project
+                    </button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fs-5 text-black" id="exampleModalLabel">Add Project</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="{% url 'projects:createproject' %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="projectName">Project name</label>
+                                            <input type="text" class="form-control" id="projectName"  name="projectName" placeholder="Enter project name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="shortDetails">Short details</label>
+                                            <textarea class="form-control stop-resize" id="shortDetails" rows="3" name="shortDetails" placeholder="Enter details here"></textarea>
+                                        </div>
+                                        <div class="d-flex justify-content-end gap-2 mt-3">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            {% comment %} <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Add Project</button>
+                            </div> {% endcomment %}
                         </div>
-                        <h5 class="card-title">{{project.name}}</h5>
-                        <p class="card-text">{{project.detail}}</p>
+                    </div>
+                {% comment %} {% elif user.user_type == "qa"%}
+                <i class="fa-solid fa-plus"></i> Create Bug {% endcomment %}
+                </a>
+            {% endif %}
+        </div>
+        <hr>
+        <div class="container">
+            <div class="row mt-4">
+                {% for project in projects%}
+                {% comment %} <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm scaleup">
+                        <div class="card-body">
+                            <div class="bg-primary img_icon">
+                                <img src="{{project.image.url}}" alt="Project image" class="img">
+                            </div>
+                            <h5 class="card-title">{{project.name}}</h5>
+                            <p class="card-text">{{project.detail}}</p>
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+                <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex">
+                    <div class="card shadow-sm scaleup h-100 w-100">
+                        <div class="card-body d-flex flex-column">
+                            <div class="bg-primary img_icon">
+                                <img src="{{project.image.url}}" alt="Project image" class="img">
+                            </div>
+                            <h5 class="card-title mt-2">{{project.name}}</h5>
+                            <p class="card-text flex-grow-1">{{project.detail}}</p>
+                            <a href="{% url 'bugs:bugs' project.id %}" class="btn btn-outline-primary">View Bugs</a>
+                        </div>
                     </div>
                 </div>
-            </div> {% endcomment %}
-            <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex">
-                <div class="card shadow-sm scaleup h-100 w-100">
-                    <div class="card-body d-flex flex-column">
-                        <div class="bg-primary img_icon">
-                            <img src="{{project.image.url}}" alt="Project image" class="img">
-                        </div>
-                        <h5 class="card-title mt-2">{{project.name}}</h5>
-                        <p class="card-text flex-grow-1">{{project.detail}}</p>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 </div>
+    <footer class="d-flex flex-wrap justify-content-between align-items-center p-3 my-4 border-top">
+        <div>
+            <p>Showing {{ start_index }} to {{ end_index }} of {{ total_entries }} entries</p>
+        </div>
+        <div>
+            {% if projects.has_previous %}
+            <a href="?page={{ projects.previous_page_number }}" class="btn btn-secondary">Previous</a>
+            {% else %}
+            <a href="" class="btn btn-secondary disabled">Previous</a>
+            {% endif %}
+            {% if projects.has_next %}
+            <a href="?page={{ projects.next_page_number }}" class="btn btn-secondary">Next</a>
+            {% else %}
+            <a href="" class="btn btn-secondary disabled">Next</a>
+            {% endif %}
+        </div>
+    </footer>
+
 {% endblock content %}
+
+
 

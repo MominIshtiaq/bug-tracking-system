@@ -28,8 +28,8 @@ class Bug(models.Model):
 
     title = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
-    deadline = models.DateTimeField(blank=True, null=True)
-    screenshot = models.ImageField(default='project_bug.jpeg', blank=True)
+    deadline = models.DateField(blank=True, null=True)
+    screenshot = models.ImageField(upload_to='screenshots/',default='screenshots/project_bug.jpeg', blank=True)
     type = models.CharField(max_length=7, choices=Project_Type)
     status = models.CharField(max_length=10, default='new')
 

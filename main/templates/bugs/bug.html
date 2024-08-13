@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Bugs {% endblock title %}
+
+{% block content %}
+{% include "partials/navbar.html" %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center ps-3 border-start border-3 border-success">
+        <div>
+            <p class="text-secondary-emphasis"> Project <i class="fa-solid fa-angle-right"></i> {{project.name}} </p>
+            <h4>All Bugs Listing</h4>
+        </div>
+        <div>
+            <button class="btn btn-outline-secondary"><i class="fa-solid fa-gear"></i></button>
+            <button class="btn btn-outline-secondary"><i class="fa-solid fa-ellipsis"></i></button>
+            {% if user.user_type == "manager" or user.user_type == "qa" %}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                        <i class="fa-solid fa-plus"></i> Add Feature
+                    </button>
+                    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fs-5 text-black" id="exampleModalLabel">Create feature</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="{% url 'bugs:create' project.id 'feature' %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="featureName">Feature title</label>
+                                            <input type="text" class="form-control" id="featureName"  name="name" placeholder="Enter feature name" required=true>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="featureDetails">Feature details</label>
+                                            <textarea class="form-control" id="featureDetails" rows="3" name="details" placeholder="Enter details here"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="featureStatus">Feature Status</label>
+                                            <select class="form-select" aria-label="Default select example" name="status" id="featureStatus">
+                                                <option selected disabled>Choose a status</option>
+                                                <option value="new">New</option>
+                                                <option value="started">Started</option>
+                                                <option value="completed">Completed</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="assigned_dev">Assign Developer</label>
+                                            <select class="form-select" aria-label="Default select example" name="assigned_dev" id="assigned_dev">
+                                                <option selected disabled>Choose a Developer</option>
+                                                {% for dev in dev_list %}
+                                                <option value="{{dev.id}}">{{dev.username}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="featureDeadline"> Feature Deadline</label>
+                                            <input type="date" class="form-control" id="featureDeadline" name="deadline" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formFile" class="form-label">Input screenshot</label>
+                                            <input class="form-control" type="file" name="formFile" id="formFile" accept='.png,.jpeg'>
+                                        </div>                                          
+                                        <div class="d-flex justify-content-end gap-2 mt-3">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fa-solid fa-plus"></i> Add Bug
+                    </button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fs-5 text-black" id="exampleModalLabel">Create bug</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="{% url 'bugs:create' project.id 'bug' %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="bugName">Bug title</label>
+                                            <input type="text" class="form-control" id="bugName"  name="name" placeholder="Enter bug name" required=true>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bugDetails">Bug details</label>
+                                            <textarea class="form-control" id="bugDetails" rows="3" name="details" placeholder="Enter details here"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bugStatus">Bug Status</label>
+                                            <select class="form-select" aria-label="Default select example" name="status" id="bugStatus">
+                                                <option selected>Choose a status</option>
+                                                <option value="new">New</option>
+                                                <option value="started">Started</option>
+                                                <option value="resolved">Resolved</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="assigned_dev">Assign Developer</label>
+                                            <select class="form-select" aria-label="Default select example" name="assigned_dev" id="assigned_dev">
+                                                <option selected disabled>Choose a Developer</option>
+                                                {% for dev in dev_list %}
+                                                <option value="{{dev.id}}">{{dev.username}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bugDeadline">Bug Deadline</label>
+                                            <input type="date" class="form-control" id="bugDeadline" name="deadline" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formFile" class="form-label">Input screenshot</label>
+                                            <input class="form-control" type="file" name="formFile" id="formFile" accept='.png,.jpeg'>
+                                        </div>                                          
+                                        <div class="d-flex justify-content-end gap-2 mt-3">
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr class="table-light">
+                <th scope="col">#</th>
+                <th scope="col">DETAILS</th>
+                <th scope="col">TYPE</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">DUE DATE</th>
+                <th scope="col">ASSIGNED TO</th>
+                <th scope="col">ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bug in bugs %}
+            <tr>
+
+                <th scope="row">{{ forloop.counter }}</th>
+                
+                {% if bug.status == "new" %}
+                <td>
+                    <span class="text-danger"><i class="fa-solid fa-circle"></i></span>
+                    {{ bug.description|truncatewords:10 }}
+                </td>
+                {% elif bug.status == "started" %}
+                <td>
+                    <span class="text-primary"><i class="fa-solid fa-circle"></i></span>
+                    {{ bug.description|truncatewords:10 }}
+                </td>
+                {% else %}
+                <td>
+                    <span class="text-success"><i class="fa-solid fa-circle"></i></span>
+                    {{ bug.description|truncatewords:10 }}
+                </td>
+                {% endif %}
+
+                <td>{{ bug.type }}</td>
+
+                {% if bug.status == "new" %}
+                <td><span class="badge bg-danger-subtle text-danger">{{ bug.status }}</span></td>
+                {% elif bug.status == "started" %}
+                <td><span class="badge bg-primary-subtle text-primary">{{ bug.status }}</span></td>
+                {% else %}
+                <td><span class="badge bg-success-subtle text-success">{{ bug.status }}</span></td>
+                {% endif %}
+
+                <td>{{ bug.deadline|date:"Y-m-d" }}</td>
+                <td>{{ bug.assigned_to.username }}</td>
+                <td>
+                    <div class="dropdown">
+                        {% comment %} <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button> {% endcomment %}
+                        <a class="btn btn-secondary bg-transparent border-0 text-black" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li class="d-flex justify-content-between pe-3 ps-3"><span>Change Setting</span> <span><i class="fa-solid fa-gear"></i></span></li>
+                            <hr>
+                          <li><a class="dropdown-item" href="{% url 'bugs:change_status' bug.id project.id 'new' %}"><span class="badge bg-danger-subtle text-danger">New</span></a></li>
+                          <li><a class="dropdown-item" href="{% url 'bugs:change_status' bug.id project.id 'started' %}"><span class="badge bg-primary-subtle text-primary">Started</span></a></li>
+                          {% if bug.type == "feature" %}
+                          <li><a class="dropdown-item" href="{% url 'bugs:change_status' bug.id project.id 'completed' %}"><span class="badge bg-success-subtle text-success">Completed</span></a></li>
+                          {% else %}
+                          <li><a class="dropdown-item" href="{% url 'bugs:change_status' bug.id project.id 'resolved' %}"><span class="badge bg-success-subtle text-success">Resolved</span></a></li>
+                          {% endif %}
+                          <hr>
+                          <li><a class="dropdown-item d-flex justify-content-between pe-3 ps-3" href="{% url 'bugs:delete' project.id bug.id %}"><span class="text-danger">Delete</span><span class="text-danger"><i class="fa-solid fa-trash"></i></span></a></li>
+                        </ul>
+                      </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No Data Available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
+

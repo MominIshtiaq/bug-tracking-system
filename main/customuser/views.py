@@ -43,3 +43,7 @@ def login(request):
     context = {'form': form}
 
     return render(request, 'customuser/login.html', context)
+
+def logout(request):
+    request.session.flush()
+    return redirect('customuser:login')
