@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Dashboard {% endblock title %}
+{% block content %}
+{% include "partials/navbar.html" %}
+<div class="container">
+    <h2 class="text-center">Search Result</h2>
+    <hr>
+    {% if projects %}
+    <div class="container">
+        <div class="row mt-4" id="project-list">
+            {% for project in projects%}
+            {% comment %} <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm scaleup">
+                    <div class="card-body">
+                        <div class="bg-primary img_icon">
+                            <img src="{{project.image.url}}" alt="Project image" class="img">
+                        </div>
+                        <h5 class="card-title">{{project.name}}</h5>
+                        <p class="card-text">{{project.detail}}</p>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+            <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex">
+                <div class="card shadow-sm scaleup h-100 w-100">
+                    <div class="card-body d-flex flex-column">
+                        <div class="bg-primary img_icon">
+                            <img src="{{project.image.url}}" alt="Project image" class="img">
+                        </div>
+                        <h5 class="card-title mt-2">{{project.name}}</h5>
+                        <p class="card-text flex-grow-1">{{project.detail}}</p>
+                        <a href="{% url 'bugs:bugs' project.id %}" class="btn btn-outline-primary">View Bugs</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <h1>404 😂😂😂</h1>
+        <h3>Project Not Found</h3>
+        <a href="{% url 'projects:dashboard' %}" class="btn btn-outline-primary">Go back to the Dashboard</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

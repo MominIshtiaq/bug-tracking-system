@@ -5,11 +5,13 @@
 {% include "partials/navbar.html" %}
 <div class="wrapper">
     <div class="container">
+        {{user.email}}
         <div class="d-flex justify-content-between align-items-center ps-3 border-start border-3 border-success">
             <p>Projects<br>Hi DeVisnext, welcome to ManageBug</p>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-flex" role="search" method="POST" action="{% url 'projects:dashboard' %}">
+                {% csrf_token %}
+                <input class="form-control" type="search" id="search-input" name="search-input" placeholder="Search" aria-label="Search">
+                <button type="submit" class="btn btn-outline-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
             {% if user.user_type == "manager" %}
                 <a href="#" class="btn btn-primary">
@@ -54,7 +56,7 @@
         </div>
         <hr>
         <div class="container">
-            <div class="row mt-4">
+            <div class="row mt-4" id="project-list">
                 {% for project in projects%}
                 {% comment %} <div class="col-12 col-md-6 col-lg-4 mb-4">
                     <div class="card shadow-sm scaleup">
@@ -102,7 +104,42 @@
         </div>
     </footer>
 
+    {% comment %} <script>
+    let data = JSON.parse('{{ qs_json|escapejs }}');
+    const input = document.getElementById('search-input')
+    const projectList = document.getElementById('project-list')
+    let filteredArr = [];
+    input.addEventListener('keyup', function(e) {
+        projectList.innerHTML = '';
+        filteredArr = data.filter(item => item['name'].toLowerCase().includes(e.target.value.toLowerCase()));
+        if(filteredArr.length > 0) {
+            filteredArr.forEach(item => {
+                const projectElement = document.createElement('div');
+                projectElement.className = 'col-12 col-md-6 col-lg-4 mb-4 d-flex';
+                let bugsUrl = `/bugs/${item.id}/`;
+                let imageUrl = item.image;  
+                projectElement.innerHTML = `
+                    <div class="card shadow-sm scaleup h-100 w-100">
+                        <div class="card-body d-flex flex-column">
+                            <div class="bg-primary img_icon">
+                                <img src="${imageUrl}" alt="Project image" class="img">
+                            </div>
+                            <h5 class="card-title mt-2">${item.name}</h5>
+                            <p class="card-text flex-grow-1">${item.detail}</p>
+                            <a href="${bugsUrl}" class="btn btn-outline-primary">View Bugs</a>
+                        </div>
+                    </div>
+                `;
+                projectList.appendChild(projectElement);
+            })
+        }
+        else {
+            projectList.innerHTML = `<p class="text-center">No projects found.</p>`;
+        }
+    })
+    </script> {% endcomment %}
 {% endblock content %}
+
 
 
 
