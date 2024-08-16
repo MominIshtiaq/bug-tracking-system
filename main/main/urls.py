@@ -10,9 +10,6 @@ urlpatterns = [
     path('bugs', include('bugs.urls'))
 ]
 
+handler404 = 'projects.views.error_404_view'
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
-
-# Superuser
-# username = admin
-# password = 123456
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

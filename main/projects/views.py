@@ -9,7 +9,6 @@ from django.core.paginator import Paginator
 # from django.conf import settings
 # from django.http import JsonResponse
 
-# Create your views here.
 def dashboard(request):
     user_id = request.session.get('user_id')
     user = Customuser.objects.get(id=user_id)
@@ -67,25 +66,6 @@ def search_view(request):
             }
             return render(request, 'projects/search.html', context)
     return redirect('projects:dashboard')
-    # query = request.GET.get('query', '')
-    # if query:
-    #     projects = Projects.objects.filter(name__icontains=query)
-    #     print(projects)
-    # else:
-    #     projects = Projects.objects.all()  # Return all projects if query is empty
 
-    # results = []
-    # for project in projects:
-    #     project_data = {
-    #         'name': project.name,
-    #         'detail': project.detail,
-    #         'image': project.image.url,
-    #         'url': project.get_absolute_url()
-    #     }
-    #     results.append(project_data)
-
-    # print(results)
-    # return JsonResponse({'results': results})
-
-
-    
+def error_404_view(request, exception):
+    return render(request, '404.html', status=404)

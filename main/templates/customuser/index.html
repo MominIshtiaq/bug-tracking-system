@@ -20,7 +20,7 @@
                 <p>To begin this journey, tell us what type of account you'd be opening</p>
                 <div class="manage">
                     {# manager #}
-                    <a href="{% url 'customuser:signin' "manager" %}" class="text-decoration-none text-black">
+                    <a href="{% url 'customuser:signup' "manager" %}" class="text-decoration-none text-black">
                         <div class="box shadow-sm scaleup">
                             <div class="icon">
                                 <i class="fa-solid fa-user"></i>
@@ -31,7 +31,7 @@
                         </div>
                     </a>
                     {# developer #}
-                    <a href="{% url 'customuser:signin' "developer" %}" class="text-decoration-none text-black">
+                    <a href="{% url 'customuser:signup' "developer" %}" class="text-decoration-none text-black">
                         <div class="box shadow-sm scaleup">
                             <div class="icon">
                                 <i class="fa-solid fa-suitcase"></i>
@@ -42,7 +42,7 @@
                         </div>
                     </a>
                     {# quality assurance #}
-                    <a href="{% url 'customuser:signin' "qa" %}" class="text-decoration-none text-black">
+                    <a href="{% url 'customuser:signup' "qa" %}" class="text-decoration-none text-black">
                         <div class="box shadow-sm scaleup">
                             <div class="icon">
                                 <i class="fa-solid fa-star"></i>
