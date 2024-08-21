@@ -22,7 +22,7 @@ class Bug(models.Model):
         ('resolved', 'Resolved')
     ]
 
-    project = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    project = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name="bugs")
     created_by = models.ForeignKey(Customuser, on_delete=models.CASCADE, related_name='created_by', limit_choices_to={'user_type__in': ['QA', 'MA']})
     assigned_to = models.ForeignKey(Customuser, on_delete=models.CASCADE, related_name='assigned_to', limit_choices_to={'user_type': 'DEV'})
 

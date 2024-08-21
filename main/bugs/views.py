@@ -12,6 +12,7 @@ import os
 def bugs(request, project_id):
     user_id = request.session.get("user_id")
     dev_list = []
+    assignees = []
     if user_id and project_id:
         user = Customuser.objects.get(id=user_id)
         project = Projects.objects.get(id = project_id)
@@ -22,11 +23,16 @@ def bugs(request, project_id):
                 'id': dev.id,
                 'username':dev.username,
             })
+        for bug in bugs:
+            if bug.assigned_to.username not in assignees:
+                assignees.append(bug.assigned_to.username)
+
         context = {
             'user': user,
             'project': project,
             'dev_list': dev_list,
             'bugs': bugs,
+            'assignees': assignees
         }
     else:
         return redirect("customuser:login")
@@ -91,3 +97,4 @@ def delete(request,project_id, bug_id):
         return redirect('bugs:bugs', project_id=project_id)
     else:
         return redirect("customuser:login")
+    

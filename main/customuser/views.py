@@ -7,6 +7,7 @@ from .forms import SignUpForm, LogInForm
 from django.views.generic.edit import CreateView, FormView
 
 
+
 def index(request):
     if not request.session.get("user_id"):
         return render(request, 'customuser/index.html')

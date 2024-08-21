@@ -14,6 +14,15 @@ def dashboard(request):
     user = Customuser.objects.get(id=user_id)
     if user:
         projects = Projects.objects.all()
+
+        for project in projects:
+            bugs_list = project.bugs.all()
+            project.bugs_count = len(bugs_list)
+            project.bugs_completed = 0
+            for bug in bugs_list:
+                if bug.status == "completed" or bug.status == 'resolved':
+                    project.bugs_completed += 1
+
         search_input = request.POST.get('search-input')
         if search_input:
             projects = Projects.objects.filter(name__icontains=search_input)

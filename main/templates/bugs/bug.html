@@ -11,122 +11,148 @@
             <h4>All Bugs Listing</h4>
         </div>
         <div>
+            <div class="dropdown">
+                <button class="btn btn-bg-transparent dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Assignees
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    {% for assignee in assignees %}
+                    <li class="dropdown-item">{{assignee}}</li>
+                    {% empty %}
+                    <li class="dropdown-item">None Assigned</li>
+                    {% endfor %}
+                </ul>
+              </div>
+        </div>
+        <div>
             <button class="btn btn-outline-secondary"><i class="fa-solid fa-gear"></i></button>
             <button class="btn btn-outline-secondary"><i class="fa-solid fa-ellipsis"></i></button>
             {% if user.user_type == "manager" or user.user_type == "qa" %}
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                        <i class="fa-solid fa-plus"></i> Add Feature
-                    </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                    <i class="fa-solid fa-plus"></i> Add Feature
+                </button>
+
+                    <!-- Modal -->
                     <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title fs-5 text-black" id="exampleModalLabel">Create feature</h5>
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content shadow-sm">
+                                <div class="modal-header bg-light">
+                                    <h5 class="modal-title fs-5 text-dark" id="exampleModalLabel">Create Feature</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form method="POST" action="{% url 'bugs:create' project.id 'feature' %}" enctype="multipart/form-data">
                                         {% csrf_token %}
-                                        <div class="form-group">
-                                            <label for="featureName">Feature title</label>
-                                            <input type="text" class="form-control" id="featureName"  name="name" placeholder="Enter feature name" required=true>
+                                        <div class="mb-4">
+                                            <label for="featureName" class="form-label">Feature Title</label>
+                                            <input type="text" class="form-control" id="featureName" name="name" placeholder="e.g., User Authentication" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="featureDetails">Feature details</label>
-                                            <textarea class="form-control" id="featureDetails" rows="3" name="details" placeholder="Enter details here"></textarea>
+                                        <div class="mb-4">
+                                            <label for="featureDetails" class="form-label">Feature Details</label>
+                                            <textarea class="form-control" id="featureDetails" rows="3" name="details" placeholder="Describe the feature in detail..."></textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="featureStatus">Feature Status</label>
-                                            <select class="form-select" aria-label="Default select example" name="status" id="featureStatus">
+                                        <div class="mb-4">
+                                            <label for="featureStatus" class="form-label">Feature Status</label>
+                                            <select class="form-select" name="status" id="featureStatus">
                                                 <option selected disabled>Choose a status</option>
                                                 <option value="new">New</option>
                                                 <option value="started">Started</option>
                                                 <option value="completed">Completed</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="assigned_dev">Assign Developer</label>
-                                            <select class="form-select" aria-label="Default select example" name="assigned_dev" id="assigned_dev">
+                                        <div class="mb-4">
+                                            <label for="assigned_dev" class="form-label">Assign Developer</label>
+                                            <select class="form-select" name="assigned_dev" id="assigned_dev">
                                                 <option selected disabled>Choose a Developer</option>
                                                 {% for dev in dev_list %}
-                                                <option value="{{dev.id}}">{{dev.username}}</option>
+                                                <option value="{{ dev.id }}">{{ dev.username }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="featureDeadline"> Feature Deadline</label>
-                                            <input type="date" class="form-control" id="featureDeadline" name="deadline" />
+                                        <div class="mb-4">
+                                            <label for="featureDeadline" class="form-label">Feature Deadline</label>
+                                            <input type="date" class="form-control" id="featureDeadline" name="deadline">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="formFile" class="form-label">Input screenshot</label>
-                                            <input class="form-control" type="file" name="formFile" id="formFile" accept='.png,.jpeg'>
-                                        </div>                                          
+                                        <div class="mb-4">
+                                            <label for="formFile" class="form-label">Input Screenshot</label>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="formFile" name="formFile" accept=".png,.jpeg">
+                                                <label class="custom-file-label" for="formFile">Choose file...</label>
+                                            </div>
+                                        </div>
                                         <div class="d-flex justify-content-end gap-2 mt-3">
                                             <button type="submit" class="btn btn-primary">Add</button>
-                                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="fa-solid fa-plus"></i> Add Bug
-                    </button>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title fs-5 text-black" id="exampleModalLabel">Create bug</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="POST" action="{% url 'bugs:create' project.id 'bug' %}" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                            <label for="bugName">Bug title</label>
-                                            <input type="text" class="form-control" id="bugName"  name="name" placeholder="Enter bug name" required=true>
+                
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-plus"></i> Add Bug
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content shadow-sm">
+                            <div class="modal-header bg-light">
+                                <h5 class="modal-title fs-5 text-dark" id="exampleModalLabel">Create Bug</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'bugs:create' project.id 'bug' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="mb-4">
+                                        <label for="bugName" class="form-label">Bug Title</label>
+                                        <input type="text" class="form-control" id="bugName" name="name" placeholder="Enter bug name" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="bugDetails" class="form-label">Bug Details</label>
+                                        <textarea class="form-control" id="bugDetails" rows="3" name="details" placeholder="Enter details here"></textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="bugStatus" class="form-label">Bug Status</label>
+                                        <select class="form-select" name="status" id="bugStatus" aria-label="Default select example">
+                                            <option selected disabled>Choose a status</option>
+                                            <option value="new">New</option>
+                                            <option value="started">Started</option>
+                                            <option value="resolved">Resolved</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="assigned_dev" class="form-label">Assign Developer</label>
+                                        <select class="form-select" name="assigned_dev" id="assigned_dev" aria-label="Default select example">
+                                            <option selected disabled>Choose a Developer</option>
+                                            {% for dev in dev_list %}
+                                            <option value="{{ dev.id }}">{{ dev.username }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="bugDeadline" class="form-label">Bug Deadline</label>
+                                        <input type="date" class="form-control" id="bugDeadline" name="deadline" />
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="formFile" class="form-label">Input Screenshot</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="formFile" name="formFile" accept=".png,.jpeg">
+                                            <label class="custom-file-label" for="formFile">Choose file...</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="bugDetails">Bug details</label>
-                                            <textarea class="form-control" id="bugDetails" rows="3" name="details" placeholder="Enter details here"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="bugStatus">Bug Status</label>
-                                            <select class="form-select" aria-label="Default select example" name="status" id="bugStatus">
-                                                <option selected>Choose a status</option>
-                                                <option value="new">New</option>
-                                                <option value="started">Started</option>
-                                                <option value="resolved">Resolved</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="assigned_dev">Assign Developer</label>
-                                            <select class="form-select" aria-label="Default select example" name="assigned_dev" id="assigned_dev">
-                                                <option selected disabled>Choose a Developer</option>
-                                                {% for dev in dev_list %}
-                                                <option value="{{dev.id}}">{{dev.username}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="bugDeadline">Bug Deadline</label>
-                                            <input type="date" class="form-control" id="bugDeadline" name="deadline" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="formFile" class="form-label">Input screenshot</label>
-                                            <input class="form-control" type="file" name="formFile" id="formFile" accept='.png,.jpeg'>
-                                        </div>                                          
-                                        <div class="d-flex justify-content-end gap-2 mt-3">
-                                            <button type="submit" class="btn btn-primary">Add</button>
-                                            <button type="reset" class="btn btn-secondary">Cancel</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2 mt-3">
+                                        <button type="submit" class="btn btn-primary">Add</button>
+                                        <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
             {% endif %}
         </div>
     </div>
@@ -210,5 +236,14 @@
         </tbody>
     </table>
 </div>
+<script>
+    // Update the label with the name of the selected file
+    document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+        const fileName = e.target.files[0] ? e.target.files[0].name : 'Choose file...';
+        const label = this.nextElementSibling;
+        label.innerText = fileName;
+        label.style.color = 'black';
+    });
+</script>
 {% endblock content %}
 
